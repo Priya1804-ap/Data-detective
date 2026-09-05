@@ -336,3 +336,136 @@ st.sidebar.write(f"**Level:** {level}")
 st.sidebar.progress(
     min(xp / 1500, 1.0)
 )
+# ==============================
+# CASE 004 - SQL DETECTIVE
+# ==============================
+
+if st.session_state.get("case3_solved", False):
+
+    st.header("💻 CASE 004: SQL Detective Challenge")
+
+    st.write(
+        "The database contains the evidence. "
+        "Use your SQL knowledge to solve the case!"
+    )
+
+    # Clue 1
+    st.subheader("🔐 SQL Clue 1")
+
+    sql_answer1 = st.radio(
+        "Which query calculates TOTAL sales?",
+        [
+            "SELECT SUM(Sales) FROM sales;",
+            "SELECT COUNT(Sales) FROM sales;",
+            "SELECT AVG(Sales) FROM sales;",
+            "SELECT MAX(Sales) FROM sales;"
+        ],
+        key="sql_clue1"
+    )
+
+    if st.button("Submit SQL Clue 1"):
+
+        if sql_answer1 == "SELECT SUM(Sales) FROM sales;":
+
+            st.success("✅ Correct! SUM() calculates total sales.")
+            st.session_state.sql1_solved = True
+
+        else:
+
+            st.error("❌ Wrong! Think about which SQL function adds values.")
+
+
+    # Clue 2
+    if st.session_state.get("sql1_solved", False):
+
+        st.subheader("🔐 SQL Clue 2")
+
+        sql_answer2 = st.radio(
+            "Which query calculates sales for each product?",
+            [
+                """SELECT Product, SUM(Sales)
+FROM sales
+GROUP BY Product;""",
+
+                "SELECT Product FROM sales;",
+
+                "SELECT SUM(Product) FROM sales;",
+
+                "SELECT Product, Sales FROM sales;"
+            ],
+            key="sql_clue2"
+        )
+
+        if st.button("Submit SQL Clue 2"):
+
+            if sql_answer2.startswith("SELECT Product, SUM(Sales)"):
+
+                st.success(
+                    "✅ Correct! GROUP BY Product gives product-wise sales."
+                )
+
+                st.session_state.sql2_solved = True
+
+            else:
+
+                st.error(
+                    "❌ Wrong! You need GROUP BY to calculate product-wise sales."
+                )
+
+
+    # Clue 3
+    if st.session_state.get("sql2_solved", False):
+
+        st.subheader("🔐 SQL Clue 3")
+
+        sql_answer3 = st.radio(
+            "Which query finds cities from highest sales to lowest sales?",
+            [
+                """SELECT City, SUM(Sales)
+FROM sales
+GROUP BY City
+ORDER BY SUM(Sales) DESC;""",
+
+                """SELECT City
+FROM sales
+ORDER BY Sales ASC;""",
+
+                """SELECT SUM(City)
+FROM sales;""",
+
+                """SELECT City, Sales
+FROM sales;"""
+            ],
+            key="sql_clue3"
+        )
+
+        if st.button("Submit SQL Clue 3"):
+
+            if sql_answer3.startswith("SELECT City, SUM(Sales)"):
+
+                st.success(
+                    "🎉 Correct! You successfully ranked cities by sales."
+                )
+
+                st.session_state.case4_solved = True
+
+            else:
+
+                st.error(
+                    "❌ Wrong! Remember GROUP BY + ORDER BY."
+                )
+
+
+# Case 004 completion
+if st.session_state.get("case4_solved", False):
+
+    st.balloons()
+
+    st.success("🎉 CASE 004 SOLVED!")
+
+    st.metric("⭐ XP Earned", "1000 XP")
+
+    st.write(
+        "🧠 Excellent work Detective! "
+        "You successfully used SQL logic to investigate the database."
+    )
