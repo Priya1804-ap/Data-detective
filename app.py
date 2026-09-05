@@ -300,3 +300,39 @@ if st.session_state.get("case3_solved", False):
         "🧠 Excellent Detective! You successfully used "
         "data to predict future sales."
     )
+# ==============================
+# DETECTIVE XP & LEVEL
+# ==============================
+
+xp = 0
+
+if st.session_state.get("case_solved", False):
+    xp += 300
+
+if st.session_state.get("case2_solved", False):
+    xp += 500
+
+if st.session_state.get("case3_solved", False):
+    xp += 750
+
+
+if xp >= 1500:
+    level = "🏆 Master Detective"
+elif xp >= 800:
+    level = "🥇 Senior Detective"
+elif xp >= 300:
+    level = "🥈 Junior Detective"
+else:
+    level = "🔰 Rookie Detective"
+
+
+st.sidebar.markdown("---")
+st.sidebar.header("🕵️ Detective Profile")
+
+st.sidebar.metric("⭐ Total XP", xp)
+
+st.sidebar.write(f"**Level:** {level}")
+
+st.sidebar.progress(
+    min(xp / 1500, 1.0)
+)
