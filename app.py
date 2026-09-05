@@ -137,3 +137,74 @@ if st.session_state.get("case_solved", False):
     st.metric("XP Earned", "300 XP")
 
     st.success("🔓 Case 001 completed!")
+    # CASE 002
+if st.session_state.get("case_solved", False):
+
+    st.header("🕵️ CASE 002: The City Sales Mystery")
+
+    st.write(
+        "Great work Detective! 🔓 A new case has been unlocked."
+    )
+
+    # Calculate city sales
+    city_sales = df.groupby("City")["Sales"].sum().sort_values(ascending=False)
+
+    highest_city = city_sales.index[0]
+
+    st.subheader("🔐 Clue 1")
+
+    city_options = list(df["City"].unique())
+
+    answer_city = st.radio(
+        "Which city has the HIGHEST overall sales?",
+        city_options,
+        key="case2_city"
+    )
+
+    if st.button("Submit Case 002", key="submit_case2"):
+
+        if answer_city == highest_city:
+
+            st.success(
+                f"✅ Correct! {highest_city} has the highest overall sales."
+            )
+
+            st.session_state.case2_solved = True
+
+        else:
+
+            st.error(
+                "❌ Wrong! Check the city-wise sales data carefully."
+            )
+
+    # City Sales Chart
+    st.subheader("📊 City Sales Investigation")
+
+    fig3 = px.bar(
+        city_sales,
+        title="Total Sales by City",
+        labels={
+            "value": "Sales",
+            "City": "City"
+        }
+    )
+
+    st.plotly_chart(
+        fig3,
+        use_container_width=True
+    )
+
+
+# Case 002 completed
+if st.session_state.get("case2_solved", False):
+
+    st.success("🎉 CASE 002 SOLVED!")
+
+    st.metric(
+        "⭐ XP Earned",
+        "500 XP"
+    )
+
+    st.write(
+        "🔓 You have successfully completed Case 002!"
+    )
