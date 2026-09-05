@@ -469,3 +469,100 @@ if st.session_state.get("case4_solved", False):
         "🧠 Excellent work Detective! "
         "You successfully used SQL logic to investigate the database."
     )
+    # ==============================
+# CASE 005 - FINAL BOSS
+# ==============================
+
+if st.session_state.get("case4_solved", False):
+
+    st.header("👑 CASE 005: FINAL BUSINESS DECISION")
+
+    st.write(
+        "The company has asked you to identify the biggest sales problem "
+        "and recommend the best action."
+    )
+
+    st.subheader("🔐 Final Question")
+
+    final_answer = st.radio(
+        "What should the company do first to improve sales?",
+        [
+            "Increase Laptop orders and investigate the Delhi market",
+            "Stop selling Mobile products",
+            "Increase discounts for every product",
+            "Stop selling in Delhi"
+        ],
+        key="final_answer"
+    )
+
+    if st.button("🚨 Submit Final Investigation"):
+
+        if final_answer == "Increase Laptop orders and investigate the Delhi market":
+
+            st.balloons()
+
+            st.success("🎉 FINAL CASE SOLVED!")
+
+            st.metric(
+                "🏆 Final XP",
+                "2000 XP"
+            )
+
+            st.write("### 🕵️ Detective Conclusion")
+
+            st.write("""
+            **Your Investigation:**
+
+            🔎 Laptop had the lowest overall sales.
+
+            🏙️ Delhi had the lowest Laptop sales.
+
+            📉 Laptop orders decreased.
+
+            💻 SQL analysis helped identify the sales pattern.
+
+            **Business Recommendation:**
+
+            The company should investigate the Delhi Laptop market,
+            understand why orders are falling, and improve Laptop sales
+            instead of applying discounts to every product.
+            """)
+
+            st.success(
+                "👑 CONGRATULATIONS! YOU ARE NOW A MASTER DATA DETECTIVE!"
+            )
+
+            st.session_state.final_solved = True
+
+        else:
+
+            st.error(
+                "❌ Investigation incomplete. "
+                "Review the evidence from Cases 001–004."
+            )
+
+
+# Final profile
+if st.session_state.get("final_solved", False):
+
+    st.header("🏆 DATA DETECTIVE — GAME COMPLETED")
+
+    st.write("### Your Skills")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("📊 Analytics", "✓")
+
+    with col2:
+        st.metric("📈 Visualization", "✓")
+
+    with col3:
+        st.metric("🤖 ML", "✓")
+
+    with col4:
+        st.metric("💻 SQL", "✓")
+
+    st.success(
+        "🎓 You completed the complete Data Detective investigation!"
+    )
