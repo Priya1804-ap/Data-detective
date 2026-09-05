@@ -208,3 +208,95 @@ if st.session_state.get("case2_solved", False):
     st.write(
         "🔓 You have successfully completed Case 002!"
     )
+    # ==============================
+# CASE 003 - ML CHALLENGE
+# ==============================
+
+if st.session_state.get("case2_solved", False):
+
+    st.header("🤖 CASE 003: Predict the Future")
+
+    st.write(
+        "The mystery continues! Use the sales data to predict future sales."
+    )
+
+    st.subheader("🎯 Make Your Prediction")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        selected_product = st.selectbox(
+            "📦 Select Product",
+            sorted(df["Product"].unique())
+        )
+
+        selected_city = st.selectbox(
+            "🏙️ Select City",
+            sorted(df["City"].unique())
+        )
+
+    with col2:
+        selected_quantity = st.number_input(
+            "📦 Expected Quantity",
+            min_value=1,
+            max_value=100,
+            value=10
+        )
+
+        selected_discount = st.number_input(
+            "🏷️ Discount (%)",
+            min_value=0,
+            max_value=50,
+            value=10
+        )
+
+    if st.button("🔮 Predict Sales"):
+
+        # Historical average sales
+        filtered_data = df[
+            (df["Product"] == selected_product) &
+            (df["City"] == selected_city)
+        ]
+
+        if len(filtered_data) > 0:
+
+            avg_price = filtered_data["Price"].mean()
+
+            predicted_sales = (
+                selected_quantity
+                * avg_price
+                * (1 - selected_discount / 100)
+            )
+
+            st.success("🔮 Prediction Complete!")
+
+            st.metric(
+                "💰 Predicted Sales",
+                f"₹{predicted_sales:,.0f}"
+            )
+
+            st.info(
+                "This prediction is based on historical product, "
+                "city, price, quantity and discount patterns."
+            )
+
+            st.session_state.case3_solved = True
+
+        else:
+
+            st.warning(
+                "⚠️ Not enough historical data for this combination."
+            )
+
+
+# Case 003 completion
+if st.session_state.get("case3_solved", False):
+
+    st.success("🎉 CASE 003 SOLVED!")
+
+    st.metric("⭐ XP Earned", "750 XP")
+
+    st.write(
+        "🧠 Excellent Detective! You successfully used "
+        "data to predict future sales."
+    )
